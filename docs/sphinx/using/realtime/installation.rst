@@ -22,6 +22,19 @@ Prerequisites
 
     Please make sure `doca-sdk-gpunetio` is installed along with `doca-all`.
 
+  Known best pracitces for an end-to-end HSB installation:
+
+  - Use a realtime host with an NVIDIA GPU and an NVIDIA ConnectX-7 or BlueField NIC that supports GPUDirect RDMA.
+    For best latency and throughput, use a host platform where the GPU and NIC have dedicated PCI Express connectivity.
+  - Use an NVIDIA ConnectX-7 NIC for benchmark-comparable latency measurements.
+    Earlier ConnectX generations may not provide all capabilities required by the HSB validation path.
+  - Use an FPGA design that integrates the HSB FPGA IP core and connects to the NIC over Ethernet.
+    A 100 Gb/s Ethernet MAC is recommended for benchmark-comparable measurements.
+    Lower-bandwidth Ethernet links can be useful for functional bring-up, but they increase serialization time and can reduce achievable throughput.
+  - Plan to integrate the ``nv_hsb_ip`` RTL source into your FPGA build.
+    CUDA-Q Realtime provides the host-side software and validation flow, but assumes that FPGA integration is performed by users familiar with RTL integration, timing closure, and board-level Ethernet bring-up.
+  - Use the latency measurement in ``validate.sh`` as both the functional validation step and the baseline benchmark for a correctly configured end-to-end setup.
+
 .. tab:: Using Custom Networking Layer
 
   - CUDA Runtime with version 12.6+ or 13.x
